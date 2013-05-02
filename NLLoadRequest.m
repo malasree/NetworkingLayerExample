@@ -9,11 +9,15 @@
 #import "NLLoadRequest.h"
 
 @interface NLLoadRequest ()
-
+{
+    
+}
 @property(assign) BOOL isExecuting;
 @property(assign) BOOL isFinished;
 @property (nonatomic, copy) requestCompletionBlock_t successBlock;
 @property (nonatomic, copy) requestFailedWithError_t failureBlock;
+@property (nonatomic, retain) NSDate *startDate;
+@property (nonatomic, retain) NSDate *endTime;
 
 @end
 
@@ -68,7 +72,7 @@
     // Make sure the connection runs in the main run loop.
     connection = [[NSURLConnection alloc] initWithRequest:requestURL delegate:self startImmediately:NO];
     [self release];
-        
+    
     [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     [connection start];
 }
