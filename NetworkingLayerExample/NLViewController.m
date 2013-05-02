@@ -7,6 +7,7 @@
 //
 
 #import "NLViewController.h"
+#import "NLRequest.h"
 
 @interface NLViewController ()
 
@@ -29,11 +30,10 @@
 - (IBAction)buttonTapped:(id)sender
 {
     NSOperationQueue *op = [[NSOperationQueue alloc] init];
-    //NSURLRequest *reqStr = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://www.apple.com/"]];
-    //NLLoadRequest *request = [[NLLoadRequest alloc] initWithURL:reqStr];
-    //request.delegate = self;
+        
+    NSURLRequest *reqStr1 = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://www.apple.com/"]];
+    NSLog(@"url %@",reqStr1);
     
-    NSURLRequest *reqStr1 = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:@"https://api.meetup.com/2/categories?key=585661c6453d70b3c4dc220683c&sign=true"]];
     NLLoadRequest *request1 = [[NLLoadRequest alloc] initWithURL:reqStr1 completionBlock:^(NSData* receivedData){
         NSString* newStr = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"Received data = %@",newStr );
@@ -42,8 +42,21 @@
         NSLog(@"Request failed with error: %@",error);
     }];
     
-    //[op addOperation:request];
+    
+    
+    NLRequest *nlRequest = [[NLRequest alloc] initWithURLString:@"http://www.apple.com/"];
+    NSURLRequest *req = (NSURLRequest*)[nlRequest buildRequestURL];
+    NSLog(@"url %@",req);
+    
+    NLLoadRequest *request2 = [[NLLoadRequest alloc] initWithURL:req completionBlock:^(NSData* receivedData){
+        NSString* newStr = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"Received data = %@",newStr );
+    }
+                                                     failedBlock:^(NSError* error){
+                                                         NSLog(@"Request failed with error: %@",error);
+                                                     }];
     [op addOperation:request1];
+    [op addOperation:request2];
     
 }
 
